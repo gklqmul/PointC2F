@@ -733,6 +733,30 @@ def plot_confusion_matrix(y_true, y_pred, class_names, sample_id, filename, save
     plt.close()
 
 
+# def plot_labels_over_time(true_label, pred_label, sample_id, filename, save_dir="prediction_plots"):
+#     """
+#     Plot the change of true and predicted labels over time (discrete categories).
+#     Use step plots for clarity.
+#     """
+#     os.makedirs(save_dir, exist_ok=True)
+
+#     frames = range(len(true_label))
+
+#     plt.figure(figsize=(12, 4))
+#     plt.step(frames, true_label, where="post", label="True Label", linewidth=2, color="black")
+#     plt.step(frames, pred_label, where="post", label="Predicted Label", linewidth=2, color="red", linestyle="--")
+
+#     plt.xlabel("Frame", fontsize=16)
+#     plt.ylabel("Label", fontsize=16)
+#     plt.title(f"Sample {sample_id} - True vs Predicted Labels", fontsize=16)
+#     plt.legend(loc="upper left")
+#     plt.grid(alpha=0.3)
+#     plt.tight_layout()
+
+#     save_path = os.path.join(save_dir, filename)
+#     plt.savefig(save_path, dpi=300)
+#     plt.close()
+
 def plot_labels_over_time(true_label, pred_label, sample_id, filename, save_dir="prediction_plots"):
     """
     Plot the change of true and predicted labels over time (discrete categories).
@@ -740,19 +764,41 @@ def plot_labels_over_time(true_label, pred_label, sample_id, filename, save_dir=
     """
     os.makedirs(save_dir, exist_ok=True)
 
+    # 定义标签映射
+    label_mapping = {
+        0: "Background",
+        1: "Stand Up", 
+        2: "Walk Forward",
+        3: "Turn",
+        4: "Walk Back",
+        5: "Sit Down"
+    }
+
     frames = range(len(true_label))
 
-    plt.figure(figsize=(12, 4))
-    plt.step(frames, true_label, where="post", label="True Label", linewidth=2, color="blue")
-    plt.step(frames, pred_label, where="post", label="Predicted Label", linewidth=2, color="red", linestyle="--")
+    # 设置字体大小
+    plt.rcParams.update({'font.size': 12})
+    
+    plt.figure(figsize=(14, 6))
+    plt.step(frames, true_label, where="post", label="True Label", linewidth=3, color="black")
+    plt.step(frames, pred_label, where="post", label="Predicted Label", linewidth=3, color="red", linestyle="--")
 
-    plt.xlabel("Frame")
-    plt.ylabel("Label")
-    plt.title(f"Sample {sample_id} - True vs Predicted Labels")
-    plt.legend(loc="upper right")
+    # 设置y轴刻度和标签（倾斜45度）
+    unique_labels = sorted(set(true_label) | set(pred_label))
+    y_ticks = list(unique_labels)
+    y_tick_labels = [label_mapping.get(label, f"Unknown({label})") for label in y_ticks]
+    
+    plt.yticks(y_ticks, y_tick_labels, rotation=45)  # 添加 rotation=45
+    
+    plt.xlabel("Frame", fontsize=14)
+    plt.ylabel("Action Phase", fontsize=14)
+    plt.title(f"Sample {sample_id} - True vs Predicted Labels", fontsize=14, fontweight='bold')
+    plt.legend(loc="upper left", fontsize=14, frameon=True, edgecolor='black', framealpha=1)
     plt.grid(alpha=0.3)
+    
+    # 调整布局，为倾斜的标签留出更多空间
     plt.tight_layout()
 
     save_path = os.path.join(save_dir, filename)
-    plt.savefig(save_path, dpi=150)
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()

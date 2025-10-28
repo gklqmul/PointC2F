@@ -121,11 +121,11 @@ def main():
     #     dropout=0.2
     # ).to(device)
 
-    # model = MultiClassTransformer(
-    #     num_classes=NUM_CLASSES,
-    #     input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  # 原始1D特征维度
-    #     point_cloud_extractor=point_cloud_extractor
-    # ).to(device)
+    model = MultiClassTransformer(
+        num_classes=NUM_CLASSES,
+        input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  # 原始1D特征维度
+        point_cloud_extractor=point_cloud_extractor
+    ).to(device)
 
 
     # model = TCNClassifier(
@@ -138,14 +138,14 @@ def main():
     # ).to(device)
 
 
-    model = MultiClassGRU(
-        num_classes=NUM_CLASSES,
-        input_dim=INPUT_DIM_1D,  # 原始1D特征维度
-        point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
-        hidden_dim=128,  # GRU隐藏层大小，可以调整
-        num_layers=2,    # GRU层数，可以调整
-        dropout=0.2
-    ).to(device)
+    # model = MultiClassGRU(
+    #     num_classes=NUM_CLASSES,
+    #     input_dim=INPUT_DIM_1D,  # 原始1D特征维度
+    #     point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
+    #     hidden_dim=128,  # GRU隐藏层大小，可以调整
+    #     num_layers=2,    # GRU层数，可以调整
+    #     dropout=0.2
+    # ).to(device)
 
     # model = PointNetClassifier(
     #     num_classes=NUM_CLASSES,
@@ -191,7 +191,7 @@ def main():
     # criterion = nn.CrossEntropyLoss(weight=class_weights)  
  
 
-    state_dict = torch.load("GRUsoftedgecleanpoints5dseprate.pt", map_location='cpu')
+    state_dict = torch.load("PointC2F/Transformer/fold1_models.pth", map_location='cpu')
     model.load_state_dict(state_dict, strict=False)
     test_loss, test_acc = evaluate(model, test_loader, criterion, device)
     print("Test:")
@@ -326,21 +326,21 @@ def main():
                 filename=f'confusion_matrix_{test_ids[i]}.png',
                 save_dir='confusion_matrices_pre'
             )
-    all_true_flat = np.concatenate([np.array(x).flatten() for x in y_true if x is not None])
-    all_pred_flat = np.concatenate([np.array(x).flatten() for x in y_pred if x is not None])
+    # all_true_flat = np.concatenate([np.array(x).flatten() for x in y_true if x is not None])
+    # all_pred_flat = np.concatenate([np.array(x).flatten() for x in y_pred if x is not None])
 
-    # 确保长度一致
-    min_len = min(len(all_true_flat), len(all_pred_flat))
-    all_true_flat = all_true_flat[:min_len]
-    all_pred_flat = all_pred_flat[:min_len]
+    # # 确保长度一致
+    # min_len = min(len(all_true_flat), len(all_pred_flat))
+    # all_true_flat = all_true_flat[:min_len]
+    # all_pred_flat = all_pred_flat[:min_len]
 
-    plot_confusion_matrix(
-        all_true_flat, all_pred_flat,  # 使用展平的数组
-        class_names=class_names, 
-        sample_id='test',
-        filename=f'confusion_matrix_test_dark.png',
-        save_dir='confusion_matrices_pre'
-    )
+    # plot_confusion_matrix(
+    #     all_true_flat, all_pred_flat,  # 使用展平的数组
+    #     class_names=class_names, 
+    #     sample_id='test',
+    #     filename=f'confusion_matrix_test_dark.png',
+    #     save_dir='confusion_matrices_pre'
+    # )
 if __name__ == '__main__':
     main()
 
