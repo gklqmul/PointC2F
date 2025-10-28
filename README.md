@@ -34,3 +34,12 @@ python train.py
 ```bash
 python test.py
 ```
+
+## Pretrained Models
+
+If you wish to evaluate the pre-trained models directly, please download them from the following links [Pretrained Link](https://drive.google.com/file/d/1JO6dYlDYPeGQErWn7vb96Qc4iiPWI2_w/view?usp=drive_link):
+
+- **`foldX_model.pth`**: Contains the trained weights for fold X.  
+  Note: Different folds use the same model architecture but are trained on different data splits.
+
+- **`foldX_metrics.json`**: Includes evaluation results and performance metrics we obtained for the corresponding fold.
