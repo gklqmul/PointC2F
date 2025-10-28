@@ -777,11 +777,11 @@ def plot_labels_over_time(true_label, pred_label, sample_id, filename, save_dir=
     frames = range(len(true_label))
 
     # 设置字体大小
-    plt.rcParams.update({'font.size': 12})
+    plt.rcParams.update({'font.size': 18})
     
     plt.figure(figsize=(14, 6))
-    plt.step(frames, true_label, where="post", label="True Label", linewidth=3, color="black")
-    plt.step(frames, pred_label, where="post", label="Predicted Label", linewidth=3, color="red", linestyle="--")
+    plt.step(frames, true_label, where="post", label="True Label", linewidth=3.5, color="black")
+    plt.step(frames, pred_label, where="post", label="Predicted Label", linewidth=3.5, color="red", linestyle="--")
 
     # 设置y轴刻度和标签（倾斜45度）
     unique_labels = sorted(set(true_label) | set(pred_label))
@@ -790,10 +790,9 @@ def plot_labels_over_time(true_label, pred_label, sample_id, filename, save_dir=
     
     plt.yticks(y_ticks, y_tick_labels, rotation=45)  # 添加 rotation=45
     
-    plt.xlabel("Frame", fontsize=14)
-    plt.ylabel("Action Phase", fontsize=14)
-    plt.title(f"Sample {sample_id} - True vs Predicted Labels", fontsize=14, fontweight='bold')
-    plt.legend(loc="upper left", fontsize=14, frameon=True, edgecolor='black', framealpha=1)
+    plt.xlabel("Frame", fontsize=18)
+    plt.title(f"Sample {sample_id} - True vs Predicted Labels", fontsize=18, fontweight='bold')
+    plt.legend(loc="upper left", fontsize=18, frameon=True, edgecolor='black', framealpha=1)
     plt.grid(alpha=0.3)
     
     # 调整布局，为倾斜的标签留出更多空间
