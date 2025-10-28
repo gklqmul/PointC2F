@@ -121,11 +121,11 @@ def main():
     #     dropout=0.2
     # ).to(device)
 
-    model = MultiClassTransformer(
-        num_classes=NUM_CLASSES,
-        input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  # 原始1D特征维度
-        point_cloud_extractor=point_cloud_extractor
-    ).to(device)
+    # model = MultiClassTransformer(
+    #     num_classes=NUM_CLASSES,
+    #     input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  # 原始1D特征维度
+    #     point_cloud_extractor=point_cloud_extractor
+    # ).to(device)
 
 
     # model = TCNClassifier(
@@ -138,14 +138,14 @@ def main():
     # ).to(device)
 
 
-    # model = MultiClassGRU(
-    #     num_classes=NUM_CLASSES,
-    #     input_dim=INPUT_DIM_1D,  # 原始1D特征维度
-    #     point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
-    #     hidden_dim=128,  # GRU隐藏层大小，可以调整
-    #     num_layers=2,    # GRU层数，可以调整
-    #     dropout=0.2
-    # ).to(device)
+    model = MultiClassGRU(
+        num_classes=NUM_CLASSES,
+        input_dim=INPUT_DIM_1D,  # 原始1D特征维度
+        point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
+        hidden_dim=128,  # GRU隐藏层大小，可以调整
+        num_layers=2,    # GRU层数，可以调整
+        dropout=0.2
+    ).to(device)
 
     # model = PointNetClassifier(
     #     num_classes=NUM_CLASSES,
@@ -191,7 +191,7 @@ def main():
     # criterion = nn.CrossEntropyLoss(weight=class_weights)  
  
 
-    state_dict = torch.load("PointC2F/Transformer/fold1_models.pth", map_location='cpu')
+    state_dict = torch.load("GRUsoftedgecleanpoints5dsepratereal.pt", map_location='cpu')
     model.load_state_dict(state_dict, strict=False)
     test_loss, test_acc = evaluate(model, test_loader, criterion, device)
     print("Test:")
@@ -215,18 +215,18 @@ def main():
     y_true = final_results['true_labels']
     y_pred = final_results.get('processed_predictions',None)
     y_raw = final_results.get('raw_predictions', None)
-    speed= compute_speeds(y_true, y_pred, test_ids)
-    plot_gait_speeds_violin(speed)
-    compute_speed_metrics( speed)
+    # speed= compute_speeds(y_true, y_pred, test_ids)
+    # plot_gait_speeds_violin(speed)
+    # compute_speed_metrics( speed)
     
-    segmentation_metrics = evaluate_comprehensive_metrics(
-        all_true_labels=final_results['true_labels'],
-        all_pred_labels=final_results['processed_predictions'], # 使用处理后的预测结果
-        num_classes=5
-    )
+    # segmentation_metrics = evaluate_comprehensive_metrics(
+    #     all_true_labels=final_results['true_labels'],
+    #     all_pred_labels=final_results['processed_predictions'], # 使用处理后的预测结果
+    #     num_classes=5
+    # )
     
 
-    print(json.dumps(segmentation_metrics, indent=4))
+    # print(json.dumps(segmentation_metrics, indent=4))
 
     # (A) 整理 final_results 到一个 DataFrame
     # 合并 'raw_metrics' 和 'processed_metrics' 以便对比
