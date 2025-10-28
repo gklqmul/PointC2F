@@ -276,66 +276,66 @@ def main():
 
     # model = MultiClassBiLSTM(
     #     num_classes=NUM_CLASSES,
-    #     input_dim=INPUT_DIM_1D,  # 原始1D特征维度
+    #     input_dim=INPUT_DIM_1D,  
     #     point_cloud_extractor=point_cloud_extractor,
-    #     hidden_dim=128,  # LSTM隐藏层大小，可以调整
-    #     num_layers=2,    # LSTM层数，可以调整
+    #     hidden_dim=128,  
+    #     num_layers=2,   
     #     dropout=0.2
     # ).to(device)
 
     model = MultiClassTransformer(
         num_classes=NUM_CLASSES,
-        input_dim=INPUT_DIM_1D,  # 原始1D特征维度
+        input_dim=INPUT_DIM_1D,  
         point_cloud_extractor=point_cloud_extractor
     ).to(device)
 
     # model = TCNClassifier(
     #      num_classes=NUM_CLASSES,
-    #         input_dim=INPUT_DIM_1D,  # 原始1D特征维度
+    #         input_dim=INPUT_DIM_1D,  
     #         point_cloud_extractor=point_cloud_extractor
     # ).to(device)
 
     # model = MultiClassGRU(
     #     num_classes=NUM_CLASSES,
-    #     input_dim=INPUT_DIM_1D,  # 原始1D特征维度
-    #     point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
+    #     input_dim=INPUT_DIM_1D, 
+    #     point_cloud_extractor=point_cloud_extractor,
     # ).to(device)
 
     # model = PointNetClassifier(
     #     num_classes=NUM_CLASSES,
-    #     input_dim=POINT_FEATURE_DIM+INPUT_DIM_1D,  # PointNet++输出的点云特征维度
+    #     input_dim=POINT_FEATURE_DIM+INPUT_DIM_1D,  
     #     point_cloud_extractor=normal_pointnet
     # ).to(device)
 
     # model = NewPointNetClassifier(
     #     num_classes=NUM_CLASSES,
-    #     input_dim=POINT_FEATURE_DIM+INPUT_DIM_1D,  # PointNet++输出的点云特征维度
+    #     input_dim=POINT_FEATURE_DIM+INPUT_DIM_1D, 
     #     point_cloud_extractor=point_cloud_extractor
     # ).to(device)
 
     # model = MLPClassifier(
     #     num_classes=NUM_CLASSES,
-    #     input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  # 原始1D特征维度
+    #     input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  
     #     point_cloud_extractor=point_cloud_extractor,
-    #     hidden_dim=256,  # MLP隐藏层维度
+    #     hidden_dim=256,
     #     dropout=0.5
     # ).to(device)
 
     model = ShuffledBiLSTM(
         num_classes=NUM_CLASSES,
-        input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  # 原始1D特征维度
-        point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
-        hidden_dim=128,  # LSTM隐藏层大小，可以调整
-        num_layers=2,    # LSTM层数，可以调整
+        input_dim=INPUT_DIM_1D + POINT_FEATURE_DIM,  
+        point_cloud_extractor=point_cloud_extractor,  
+        hidden_dim=128,  
+        num_layers=2,    
         dropout=0.1,
-        shuffle_time=True  # 启用时间维度随机打乱
+        shuffle_time=True 
     ).to(device)
 
     # model = CNN1DClassifier(
     #     num_classes=NUM_CLASSES,
-    #     input_dim=INPUT_DIM_1D+POINT_FEATURE_DIM,  # 原始1D特征维度
-    #     point_cloud_extractor=point_cloud_extractor,  # 使用 PointNet 特征提取器
-    #     dropout=0.2  # Dropout比例
+    #     input_dim=INPUT_DIM_1D+POINT_FEATURE_DIM,  
+    #     point_cloud_extractor=point_cloud_extractor, 
+    #     dropout=0.2 
     # ).to(device)
 
     # model = DGCNN().to(device)
@@ -346,7 +346,7 @@ def main():
     class_weights = 1.0/torch.tensor([ 10, 1, 4, 1, 4, 4], dtype=torch.float)
     # criterion = FocalLoss(gamma=4.0, weight=class_weights).to(device)
     criterion = WeightedFocalLoss(gamma=2.0, weight=class_weights).to(device)
-    # criterion = nn.CrossEntropyLoss(weight=class_weights)  # 忽略填充标签
+    # criterion = nn.CrossEntropyLoss(weight=class_weights)  
     optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
     best_val_f1 = 0
@@ -363,7 +363,7 @@ def main():
             best_val_f1 = acc
             torch.save(model.state_dict(), "GRUsoftedgecleanpoints5dsepratereal.pt")
 
-    #         # 单独保存特征提取器
+    #         # save point cloud extractor
     #         torch.save({
     #             'extractor_state_dict': model.get_extractor_state_dict(),
     #             'val_f1': best_val_f1,
