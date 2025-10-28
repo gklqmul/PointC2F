@@ -13,7 +13,8 @@ You can set up the required environment using a `requirements.txt`.
 
 1.  **Create a virtual environment:**
     ```bash
-    python -m venv venv
+    conda create --name env python=3.9
+    conda activate env
     ```
 
 2.  **Install the dependencies:**
